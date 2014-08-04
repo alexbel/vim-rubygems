@@ -33,7 +33,7 @@ The plugin provides the following commands:
 * :RubygemsVersions
 * :RubygemsRecentVersion
 
-It parses current line under the cursor, extracts the name of game and shows information for it.
+It parses current line under the cursor, extracts the name of the gem and shows information for it.
 
 ## Set mappings (optional):
 ```
