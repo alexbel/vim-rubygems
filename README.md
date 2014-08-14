@@ -43,5 +43,5 @@ nnoremap <leader><leader>g :RubygemsRecentVersion<cr>
 ## TODO
 * ✔ Syntax highlighting
 * ✔ Show a list of versions for a gem
-* Gemfile check for outdated gems
-* Add gem version for gemfile in Gemfile
+* ✔ Append gem version for a gem
+* Check Gemfile for outdated gems

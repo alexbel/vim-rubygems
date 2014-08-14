@@ -44,6 +44,16 @@ function! rubygems#Info()
   call s:render(str)
 endfunction
 
+function! rubygems#AppendVersion()
+  let gem_name = s:gem_name_from_current_line()
+  if empty(gem_name)
+    return
+  endif
+  let gem_info = s:load_gem_info(gem_name)
+  let gem_version = gem_info.version
+  execute "normal! A, '~> ".gem_version."'"
+endfunction
+
 "
 " Private
 "
