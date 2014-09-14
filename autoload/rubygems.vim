@@ -54,6 +54,16 @@ function! rubygems#AppendVersion()
   execute "normal! A, '~> ".gem_version."'"
 endfunction
 
+function! rubygems#Search(query)
+  let uri = 'https://rubygems.org/api/v1/search.json?query=' . a:query
+  let response = s:request(uri)
+  let content = ''
+  for gem in response
+    let content = content . gem.name . ': ' . s:strip(gem.info) . "\<cr>"
+  endfor
+  call s:render(content)
+endfunction
+
 "
 " Private
 "
@@ -67,11 +77,11 @@ endfunction
 
 function! s:render(str)
   silent keepalt belowright split Rubygems
-  setlocal noswapfile nobuflisted nospell nowrap modifiable
+  setlocal nosmartindent noautoindent noswapfile nobuflisted nospell nowrap modifiable
   setlocal buftype=nofile bufhidden=hide
   1,$d
 
-  execute "normal! I " . a:str
+  execute "normal! I" . a:str
 
   normal! gg^h
   exec 'resize 5'
@@ -120,4 +130,14 @@ function! s:request(uri)
   let content = webapi#json#decode(result.content)
   redraw!
   return content
+endfunction
+
+function! s:strip(input_str)
+  let output_str = substitute(a:input_str, '^\s*\(.\{-}\)\s*$', '\1', '')
+  let output_str = s:strip_last_new_line_char(output_str)
+  return output_str
+endfunction
+
+function! s:strip_last_new_line_char(str)
+  return substitute(a:str, '\n$', '', 'g')
 endfunction

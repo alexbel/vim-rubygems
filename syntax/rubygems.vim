@@ -5,7 +5,7 @@ endif
 setlocal iskeyword+=:
 syn case ignore
 
-syn match name "[A-Za-z ]\+:\s"
+syn match name "[0-9A-Za-z _-]\+:\s"
 syn match valueNumber "\d\+"
 
 highlight link name Statement
