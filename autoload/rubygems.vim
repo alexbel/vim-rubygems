@@ -64,6 +64,32 @@ function! rubygems#Search(query)
   call s:render(content)
 endfunction
 
+function! rubygems#GemfileCheck()
+  sign unplace *
+  normal! gg
+  call s:highlight_signs()
+  let lines = getbufline(bufname('%'), 0, line('$'))
+  let index = 0
+  for line in lines
+    let index += 1
+    call s:update_cursor_position(index)
+    let gem_name = s:extract_gem_name(line)
+    let current_gem_version = s:extract_gem_version(line)
+
+    if strlen(gem_name) < 2 || strlen(current_gem_version) < 2
+      continue
+    endif
+
+    call s:hi_line(index, 'rubygem_checking')
+    let gem_info = s:load_gem_info(gem_name)
+    if s:compare_versions(current_gem_version, gem_info.version)
+      call s:hi_line(index, 'rubygem_warning',)
+    else
+      exe "sign unplace ".index
+    endif
+  endfor
+endfunction
+
 "
 " Private
 "
@@ -97,14 +123,23 @@ endfunction
 
 function! s:extract_gem_name(str)
   let str = split(a:str, ' ')
-  if str[0] == 'gem'
+  if len(str) > 1 && str[0] == 'gem'
     let gem_name = tolower(str[1])
     let gem_name = matchstr(gem_name, '[A-z-_]\+')
+    return gem_name
   else
-    echohl ErrorMsg | echomsg "Can't find a gem name" | echohl None
     return
   endif
-  return gem_name
+endfunction
+
+function! s:extract_gem_version(str)
+  let str = split(a:str, ' ')
+  if len(str) > 2 && str[0] == 'gem'
+    let gem_version = matchstr(str[-1], '[0-9.]\+')
+    return gem_version
+  else
+    return
+  endif
 endfunction
 
 function! s:extract_date(str)
@@ -140,4 +175,55 @@ endfunction
 
 function! s:strip_last_new_line_char(str)
   return substitute(a:str, '\n$', '', 'g')
+endfunction
+
+function! s:compare_versions(current, last)
+  let current = split(a:current, '\.')
+  let current_major = current[0]
+  let current_minor = current[1]
+
+  if len(current) == 3
+    let current_patch = current[2]
+  else
+    let current_patch = 0
+  end
+
+  let last = split(a:last, '\.')
+  let last_major = last[0]
+  let last_minor = last[1]
+
+  if len(last) == 3
+    let last_patch = last[2]
+  else
+    let last_patch = 0
+  endif
+
+  if last_major > current_major
+    return 1
+  elseif last_minor > current_minor
+    return 1
+  elseif last_patch > current_patch
+    return 1
+  else
+    return 0
+  endif
+endfunction
+
+function! s:highlight_signs()
+  highlight WarningSign term=standout ctermfg=yellow ctermbg=0
+  highlight CheckingSign term=standout ctermfg=118 ctermbg=0
+  sign define rubygem_warning text=⚠ texthl=WarningSign
+  sign define rubygem_checking text=➡ texthl=CheckingSign
+endfunction
+
+function! s:hi_line(line_num, name)
+  exe "sign place ".a:line_num." line=".a:line_num." name=".a:name." file=".bufname('%')
+endfunction
+
+function! s:update_cursor_position(index)
+  call setpos('.', [bufnr('$'), a:index, 0, 1])
+  if &cursorline
+    let current_cursorline_bg = synIDattr(synIDtrans(hlID('CursorLine')), 'bg')
+    exe "highlight CursorLine ctermbg=".current_cursorline_bg
+  endif
 endfunction

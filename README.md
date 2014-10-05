@@ -36,10 +36,9 @@ The plugin provides the following commands:
 * :RubygemsRecentVersion
 * :RubygemsAppendVersion
 * :RubygemsSearch gem_name
+* :RubygemsGemfileCheck
 
-It parses current line under the cursor, extracts the name of the gem and shows information for it.
-
-## Set mappings (optional):
+## Mappings example (optional):
 ```
 nnoremap <leader><leader>g :RubygemsRecentVersion<cr>
 ```
@@ -49,4 +48,5 @@ nnoremap <leader><leader>g :RubygemsRecentVersion<cr>
 * ✔ Show a list of versions for a gem
 * ✔ Append gem version for a gem
 * ✔ Active gems search
-* Check Gemfile for outdated gems
+* ✔ Check Gemfile for outdated gems
+* Tests
