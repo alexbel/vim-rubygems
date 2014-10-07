@@ -221,7 +221,7 @@ function! s:hi_line(line_num, name)
 endfunction
 
 function! s:update_cursor_position(index)
-  call setpos('.', [bufnr('$'), a:index, 0, 1])
+  call setpos('.', [bufname('%'), a:index, 0, 1])
   if &cursorline
     let current_cursorline_bg = synIDattr(synIDtrans(hlID('CursorLine')), 'bg')
     exe "highlight CursorLine ctermbg=".current_cursorline_bg
