@@ -64,6 +64,10 @@ function! rubygems#Search(query)
   call s:render(content)
 endfunction
 
+function! rubygems#clean_signs()
+  sign unplace *
+endfunction
+
 function! rubygems#GemfileCheck()
   sign unplace *
   normal! gg
