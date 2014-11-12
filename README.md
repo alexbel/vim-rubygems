@@ -1,20 +1,22 @@
 # Vim Rubygems
 
-The vim-rubygems plugin provides ability to work with rubygems.org inside Vim.
+The vim-rubygems plugin provides ability to work with rubygems.org inside Vim and adds some commands to keep Gemfile up to date.
 
-Currenty the following features are provided by the plugin:
+# Features
 
 * general information for selected gem (version, authors, summary, built date, downloads, description)
 * versions list for selected gem (version, built date)
 * last version for selected gem (version, built date)
 * append a version for a gem under cursor
-* active gems search
+* gems search
+* [bundler-audit](https://github.com/rubysec/bundler-audit) integration. The plugin runs `bundle-audit` command while saving Gemfile and let you know about outdated vulnerable gems.
 
 ## Requirements
 
 * Vim 7.3+
 * [webapi-vim](https://github.com/mattn/webapi-vim)
 * `curl` or `wget` commands
+* `bundler-audit` gem (optional)
 
 ## Installation
 The plugin is compatible with Vundle/Pathogen.  
@@ -37,6 +39,7 @@ The plugin provides the following commands:
 * :RubygemsAppendVersion
 * :RubygemsSearch gem_name
 * :RubygemsGemfileCheck
+* :RubygemsBundleAudit
 
 ## Mappings example (optional):
 ```

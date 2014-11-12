@@ -94,6 +94,17 @@ function! rubygems#GemfileCheck()
   endfor
 endfunction
 
+function! rubygems#BundleAudit()
+  if exists('g:rubygems_bundle_audit_disable')
+    finish
+  endif
+  let result = system('bundle-audit')
+  if strlen(result) > 0
+    call s:render(result)
+    exec 'resize 7'
+  endif
+endfunction
+
 "
 " Private
 "
