@@ -95,10 +95,10 @@ function! rubygems#GemfileCheck()
 endfunction
 
 function! rubygems#BundleAudit()
-  if exists('g:rubygems_bundle_audit_disable')
+  if exists('g:rubygems_bundle_audit_autocheck_disable')
     finish
   endif
-  let result = system('bundle-audit')
+  let result = system('bundle-audit | grep -v "No unpatched versions found"')
   if strlen(result) > 0
     call s:render(result)
     exec 'resize 7'
