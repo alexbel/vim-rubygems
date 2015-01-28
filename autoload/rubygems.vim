@@ -96,7 +96,10 @@ endfunction
 
 function! rubygems#BundleAudit()
   if exists('g:rubygems_bundle_audit_autocheck_disable')
-    finish
+    return
+  endif
+  if executable('bundle-audit') != 1
+    return
   endif
   let result = system('bundle-audit | grep -v "No unpatched versions found"')
   if strlen(result) > 0
