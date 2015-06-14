@@ -39,6 +39,7 @@ function! rubygems#Info()
   let str = "Last version: " . gem_info.version . "\<cr>"
   let str = str . "Authors: " . gem_info.authors . "\<cr>"
   let str = str . "Downloads: " . gem_info.version_downloads . "\<cr>"
+  let str = str . "Project uri: " . gem_info.project_uri . "\<cr>"
   let str = str . "Source code uri: " . gem_info.source_code_uri . "\<cr>"
   let str = str . "Description: " . gem_info.info
   call s:render(str)
