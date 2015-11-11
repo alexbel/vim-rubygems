@@ -102,7 +102,7 @@ function! rubygems#BundleAudit()
   if executable('bundle-audit') != 1
     return
   endif
-  let result = system('bundle-audit | grep -v "No unpatched versions found"')
+  let result = system('bundle-audit | grep -v "No vulnerabilities found"')
   if strlen(result) > 0
     call s:render(result)
     exec 'resize 7'
