@@ -52,6 +52,7 @@ function! rubygems#AppendVersion()
   endif
   let gem_info = s:load_gem_info(gem_name)
   let gem_version = gem_info.version
+  call s:remove_current_version()
   execute "normal! A, '~> ".gem_version."'"
 endfunction
 
@@ -245,4 +246,11 @@ function! s:update_cursor_position(index)
     let current_cursorline_bg = synIDattr(synIDtrans(hlID('CursorLine')), 'bg')
     exe "highlight CursorLine ctermbg=".current_cursorline_bg
   endif
+endfunction
+
+function! s:remove_current_version()
+  let line = getline('.')
+  let line = split(line, ',')[0]
+  let line = substitute(line, '^\s\+', '', 'g')
+  execute "normal! ^C".line
 endfunction
