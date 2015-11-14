@@ -231,7 +231,7 @@ endfunction
 function! s:highlight_signs()
   highlight WarningSign term=standout ctermfg=yellow ctermbg=0
   highlight CheckingSign term=standout ctermfg=118 ctermbg=0
-  sign define rubygem_warning text=⚠ texthl=WarningSign
+  sign define rubygem_warning text=! texthl=WarningSign
   sign define rubygem_checking text=➡ texthl=CheckingSign
 endfunction
 
