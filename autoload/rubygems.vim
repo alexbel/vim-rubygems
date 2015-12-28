@@ -103,6 +103,9 @@ function! rubygems#BundleAudit()
   if executable('bundle-audit') != 1
     return
   endif
+  if !filereadable('./Gemfile.lock')
+    return
+  endif
   let result = system('bundle-audit | grep -v "No vulnerabilities found"')
   if strlen(result) > 0
     call s:render(result)
