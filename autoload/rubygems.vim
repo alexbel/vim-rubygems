@@ -148,7 +148,7 @@ function! s:extract_gem_name(str)
   let str = split(a:str, ' ')
   if len(str) > 1 && str[0] == 'gem'
     let gem_name = tolower(str[1])
-    let gem_name = matchstr(gem_name, '[A-z-_]\+')
+    let gem_name = matchstr(gem_name, '[0-9A-z-_]\+')
     return gem_name
   else
     return
