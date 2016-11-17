@@ -125,17 +125,22 @@ function! s:show_versions(info)
 endfunction
 
 function! s:render(str)
-  silent keepalt belowright split Rubygems
-  setlocal nosmartindent noautoindent noswapfile nobuflisted nospell nowrap modifiable
-  setlocal buftype=nofile bufhidden=hide
-  1,$d
-
+  if exists("t:rubygems_buffer") && bufwinnr(t:rubygems_buffer) > 0
+    execute "keepjumps ".bufwinnr(t:rubygems_buffer)."wincmd W"
+    setlocal modifiable filetype=rubygems
+    execute "normal ggdG"
+  else
+    silent keepalt belowright split Rubygems
+    setlocal nosmartindent noautoindent noswapfile nobuflisted nospell nowrap modifiable
+    setlocal buftype=nofile bufhidden=wipe
+    1,$d
+    exec 'resize 5'
+    nnoremap <silent> <buffer> q :q<CR>
+    let t:rubygems_buffer = bufnr('%')
+  endif
   execute "normal! I" . a:str
-
   normal! gg^h
-  exec 'resize 5'
   setlocal nomodifiable filetype=rubygems
-  nnoremap <silent> <buffer> q :q<CR>
 endfunction
 
 function! s:gem_name_from_current_line()
