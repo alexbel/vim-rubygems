@@ -149,9 +149,19 @@ function! s:gem_name_from_current_line()
   return gem_name
 endfunction
 
+function! s:is_gem_definition(str_arr)
+  let l:gem_def_prefixes = [
+        \ 'gem',
+        \ 'spec.add_development_dependency',
+        \ 'spec.add_runtime_dependency'
+        \ ]
+
+  return index(l:gem_def_prefixes, a:str_arr[0]) >= 0
+endfunction
+
 function! s:extract_gem_name(str)
   let str = split(a:str, ' ')
-  if len(str) > 1 && str[0] == 'gem'
+  if len(str) > 1 && s:is_gem_definition(str)
     let gem_name = tolower(str[1])
     let gem_name = matchstr(gem_name, '[0-9A-z-_]\+')
     return gem_name
@@ -162,7 +172,7 @@ endfunction
 
 function! s:extract_gem_version(str)
   let str = split(a:str, ' ')
-  if len(str) > 2 && str[0] == 'gem'
+  if len(str) > 2 && s:is_gem_definition(str)
     let gem_version = matchstr(str[-1], '[0-9.]\+')
     return gem_version
   else
